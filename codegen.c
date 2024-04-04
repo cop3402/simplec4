@@ -23,6 +23,16 @@ FILE *codegenout;  // the output of code generation
 #define RET fprintf(codegenout, "\tret\n")
 #define COMMENT(arg1) fprintf(codegenout, "\t# %s\n", arg1)
 
+#define CMP0(arg) fprintf(codegenout,"\tcmp $0, %s\n", arg)
+#define CMP(arg1, arg2) fprintf(codegenout,"\tcmp %s, %s\n", arg1, arg2)
+#define JE(labelnum) fprintf(codegenout,"\tje .L%d\n", labelnum)
+#define JL(labelnum) fprintf(codegenout,"\tjl .L%d\n", labelnum)
+#define JLE(labelnum) fprintf(codegenout,"\tjle .L%d\n", labelnum)
+#define JG(labelnum) fprintf(codegenout,"\tjg .L%d\n", labelnum)
+#define JGE(labelnum) fprintf(codegenout,"\tjge .L%d\n", labelnum)
+#define JMP(labelnum) fprintf(codegenout,"\tjmp .L%d\n", labelnum)
+#define LABEL(labelnum) fprintf(codegenout,".L%d:\n", labelnum)
+
 const string const param_registers[] = { "%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"}; // all const
 
 static void codegen_main(T_main main);
