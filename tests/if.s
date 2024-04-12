@@ -7,7 +7,7 @@ main:
 	# emit main's prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$32, %rsp
+	sub	$48, %rsp
 	push	%rbx
 	# move argc and argv from parameter registers to the stack
 	mov	%rdi, -24(%rbp)
@@ -15,15 +15,17 @@ main:
 	# generate code for the body
 	# generate code for the right-hand side of the assignment
 	# push the integer
-	mov	$0, %rax
+	mov	$1, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$2, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# generating code for an ifstmt
 	# generate code for the expression
@@ -41,6 +43,7 @@ main:
 	mov	$3, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# emit the end label
 .L0:
