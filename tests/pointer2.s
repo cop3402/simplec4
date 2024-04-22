@@ -7,7 +7,7 @@ main:
 	# emit main's prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$40, %rsp
+	sub	$48, %rsp
 	push	%rbx
 	# move argc and argv from parameter registers to the stack
 	mov	%rdi, -32(%rbp)
@@ -18,6 +18,7 @@ main:
 	mov	$10, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# copy the base pointer to another register
@@ -27,6 +28,7 @@ main:
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# generate code for the deref on the left side of an expression
 	mov	-16(%rbp), %rax
@@ -39,7 +41,7 @@ main:
 	pop	%rax
 	# pop the result of the left-hand side
 	pop	%rbx
-	# move the right-hand side's value into the address pointed to by the left-hand size
+	# move the right-hand side's value into the address pointed to by the left-hand side
 	mov	%rax, (%rbx)
 	# generate code for the right-hand side of the assignment
 	# generate code for the unary operand
@@ -52,6 +54,7 @@ main:
 	# push the expression result
 	push	%rbx
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -24(%rbp)
 	# generate code for the return expression
 	mov	-8(%rbp), %rax

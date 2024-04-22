@@ -7,7 +7,7 @@ main:
 	# emit main's prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$32, %rsp
+	sub	$48, %rsp
 	push	%rbx
 	# move argc and argv from parameter registers to the stack
 	mov	%rdi, -24(%rbp)
@@ -18,6 +18,7 @@ main:
 	mov	$1, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generating code for an ifelsestmt
 	# generate code for the expression
@@ -35,6 +36,7 @@ main:
 	mov	$23, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# emit a jump to the end label
 	jmp .L1
@@ -46,6 +48,7 @@ main:
 	mov	$42, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# emit the end label
 .L1:

@@ -7,7 +7,7 @@ main:
 	# emit main's prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$32, %rsp
+	sub	$48, %rsp
 	push	%rbx
 	# move argc and argv from parameter registers to the stack
 	mov	%rdi, -24(%rbp)
@@ -18,12 +18,14 @@ main:
 	mov	$3, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$0, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# generating code for a whilestmt
 	# emit the head label
@@ -55,6 +57,7 @@ main:
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -73,6 +76,7 @@ main:
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# emit a jump to the head label
 	jmp .L0

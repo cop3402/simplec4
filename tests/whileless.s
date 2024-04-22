@@ -7,7 +7,7 @@ main:
 	# emit main's prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$40, %rsp
+	sub	$48, %rsp
 	push	%rbx
 	# move argc and argv from parameter registers to the stack
 	mov	%rdi, -32(%rbp)
@@ -18,18 +18,21 @@ main:
 	mov	$2, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$1, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$0, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -24(%rbp)
 	# generating code for a whilestmt
 	# emit the head label
@@ -43,7 +46,7 @@ main:
 	cmp $0, %rax
 	# emit a je to the end label
 	je .L1
-	# generate code for the if branch
+	# generate code for the while body
 	# generating code for an ifstmt
 	# generate code for the expression
 	# generate code for the left operand
@@ -57,14 +60,6 @@ main:
 	pop	%rbx
 	# pop the left operand
 	pop	%rax
-	cmp	%rax, %rbx
-	jle	.L2
-	mov	$1, %rax
-	jmp	.L3
-.L2:
-	mov	$0, %rax
-.L3:
-	push	%rax
 	# push the expression result
 	push	%rax
 	# emit a pop of the expression value from the stack into a register
@@ -72,7 +67,7 @@ main:
 	# emit a cmp of register's value to 0, i.e., check whether it's false
 	cmp $0, %rax
 	# emit a je to the end label
-	je .L4
+	je .L2
 	# generate code for the if branch
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -87,13 +82,13 @@ main:
 	pop	%rax
 	# do the addition
 	add	%rbx, %rax
-	push	%rax
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# emit the end label
-.L4:
+.L2:
 	# generating code for an ifstmt
 	# generate code for the expression
 	# generate code for the left operand
@@ -108,14 +103,6 @@ main:
 	pop	%rbx
 	# pop the left operand
 	pop	%rax
-	cmp	%rax, %rbx
-	jle	.L5
-	mov	$1, %rax
-	jmp	.L6
-.L5:
-	mov	$0, %rax
-.L6:
-	push	%rax
 	# push the expression result
 	push	%rax
 	# emit a pop of the expression value from the stack into a register
@@ -123,7 +110,7 @@ main:
 	# emit a cmp of register's value to 0, i.e., check whether it's false
 	cmp $0, %rax
 	# emit a je to the end label
-	je .L7
+	je .L3
 	# generate code for the if branch
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -139,18 +126,19 @@ main:
 	pop	%rax
 	# do the subtraction
 	sub	%rbx, %rax
-	push	%rax
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# emit the end label
-.L7:
+.L3:
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$3, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -24(%rbp)
 	# generating code for an ifstmt
 	# generate code for the expression
@@ -165,14 +153,6 @@ main:
 	pop	%rbx
 	# pop the left operand
 	pop	%rax
-	cmp	%rax, %rbx
-	jle	.L8
-	mov	$1, %rax
-	jmp	.L9
-.L8:
-	mov	$0, %rax
-.L9:
-	push	%rax
 	# push the expression result
 	push	%rax
 	# emit a pop of the expression value from the stack into a register
@@ -180,20 +160,22 @@ main:
 	# emit a cmp of register's value to 0, i.e., check whether it's false
 	cmp $0, %rax
 	# emit a je to the end label
-	je .L10
+	je .L4
 	# generate code for the if branch
 	# generate code for the right-hand side of the assignment
 	mov	-24(%rbp), %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# emit the end label
-.L10:
+.L4:
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$0, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# emit a jump to the head label
 	jmp .L0

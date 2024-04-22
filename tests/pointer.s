@@ -6,9 +6,9 @@ f:
 	# emit the function prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$16, %rsp
+	sub	$32, %rsp
 	push	%rbx
-	# move parameter onto the stack
+	# move parameters into the stack
 	mov	%rdi, -8(%rbp)
 	# generate code for the body
 	# generate code for the right-hand side of the assignment
@@ -16,6 +16,7 @@ f:
 	mov	$2, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# generate code for the return expression
 	# generate code for the left operand
@@ -34,7 +35,6 @@ f:
 	push	%rax
 	# save the return expression into %rax per the abi
 	pop	%rax
-	# emit the epilogue
 	pop	%rbx
 	mov	%rbp, %rsp
 	pop	%rbp
@@ -47,7 +47,7 @@ main:
 	# emit main's prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$32, %rsp
+	sub	$48, %rsp
 	push	%rbx
 	# move argc and argv from parameter registers to the stack
 	mov	%rdi, -24(%rbp)
@@ -59,14 +59,16 @@ main:
 	mov	$7, %rax
 	push	%rax
 	# generate code for the right operand
-	# evaluate the parameter
+	# pass parameters either in registers or in stack
+	# evaluate a parameter
 	# push the integer
 	mov	$3, %rax
 	push	%rax
-	# pass the parameter
+	# move a parameter to a register
 	pop	%rdi
 	# call the function
 	call	f
+	# restore the stack afterwards
 	# push the return value
 	push	%rax
 	# pop the right operand
@@ -78,6 +80,7 @@ main:
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -96,6 +99,7 @@ main:
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -115,6 +119,7 @@ main:
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -135,6 +140,7 @@ main:
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# copy the base pointer to another register
@@ -144,6 +150,7 @@ main:
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# generate code for the deref on the left side of an expression
 	mov	-16(%rbp), %rax
@@ -156,7 +163,7 @@ main:
 	pop	%rax
 	# pop the result of the left-hand side
 	pop	%rbx
-	# move the right-hand side's value into the address pointed to by the left-hand size
+	# move the right-hand side's value into the address pointed to by the left-hand side
 	mov	%rax, (%rbx)
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -182,6 +189,7 @@ main:
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the return expression
 	mov	-8(%rbp), %rax

@@ -6,9 +6,9 @@ isodd:
 	# emit the function prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$8, %rsp
+	sub	$16, %rsp
 	push	%rbx
-	# move parameter onto the stack
+	# move parameters into the stack
 	mov	%rdi, -8(%rbp)
 	# generate code for the body
 	# generating code for an ifelsestmt
@@ -29,7 +29,6 @@ isodd:
 	cdq
 	idiv	%rbx
 	mov	%rdx, %rax
-	push	%rax
 	# push the expression result
 	push	%rax
 	# generate code for the right operand
@@ -63,10 +62,10 @@ isodd:
 	pop	%rax
 	# do the addition
 	add	%rbx, %rax
-	push	%rax
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# emit a jump to the end label
 	jmp .L1
@@ -91,7 +90,6 @@ isodd:
 	cdq
 	idiv	%rbx
 	mov	%rdx, %rax
-	push	%rax
 	# push the expression result
 	push	%rax
 	# generate code for the right operand
@@ -116,6 +114,7 @@ isodd:
 	mov	$2, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# emit a jump to the end label
 	jmp .L3
@@ -127,6 +126,7 @@ isodd:
 	mov	$11, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# emit the end label
 .L3:
@@ -137,7 +137,6 @@ isodd:
 	push	%rax
 	# save the return expression into %rax per the abi
 	pop	%rax
-	# emit the epilogue
 	pop	%rbx
 	mov	%rbp, %rsp
 	pop	%rbp
@@ -149,9 +148,9 @@ iseven:
 	# emit the function prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$8, %rsp
+	sub	$16, %rsp
 	push	%rbx
-	# move parameter onto the stack
+	# move parameters into the stack
 	mov	%rdi, -8(%rbp)
 	# generate code for the body
 	# generate code for the return expression
@@ -160,7 +159,6 @@ iseven:
 	push	%rax
 	# save the return expression into %rax per the abi
 	pop	%rax
-	# emit the epilogue
 	pop	%rbx
 	mov	%rbp, %rsp
 	pop	%rbp
@@ -173,7 +171,7 @@ main:
 	# emit main's prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$40, %rsp
+	sub	$48, %rsp
 	push	%rbx
 	# move argc and argv from parameter registers to the stack
 	mov	%rdi, -32(%rbp)
@@ -184,36 +182,44 @@ main:
 	mov	$3, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$2, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# generate code for the right-hand side of the assignment
-	# evaluate the parameter
+	# pass parameters either in registers or in stack
+	# evaluate a parameter
 	mov	-8(%rbp), %rax
 	push	%rax
-	# pass the parameter
+	# move a parameter to a register
 	pop	%rdi
 	# call the function
 	call	isodd
+	# restore the stack afterwards
 	# push the return value
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -24(%rbp)
 	# generate code for the right-hand side of the assignment
-	# evaluate the parameter
+	# pass parameters either in registers or in stack
+	# evaluate a parameter
 	mov	-16(%rbp), %rax
 	push	%rax
-	# pass the parameter
+	# move a parameter to a register
 	pop	%rdi
 	# call the function
 	call	iseven
+	# restore the stack afterwards
 	# push the return value
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -24(%rbp)
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -228,10 +234,10 @@ main:
 	pop	%rax
 	# do the addition
 	add	%rbx, %rax
-	push	%rax
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -246,34 +252,40 @@ main:
 	pop	%rax
 	# do the addition
 	add	%rbx, %rax
-	push	%rax
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# generate code for the right-hand side of the assignment
-	# evaluate the parameter
+	# pass parameters either in registers or in stack
+	# evaluate a parameter
 	mov	-8(%rbp), %rax
 	push	%rax
-	# pass the parameter
+	# move a parameter to a register
 	pop	%rdi
 	# call the function
 	call	isodd
+	# restore the stack afterwards
 	# push the return value
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -24(%rbp)
 	# generate code for the right-hand side of the assignment
-	# evaluate the parameter
+	# pass parameters either in registers or in stack
+	# evaluate a parameter
 	mov	-16(%rbp), %rax
 	push	%rax
-	# pass the parameter
+	# move a parameter to a register
 	pop	%rdi
 	# call the function
 	call	iseven
+	# restore the stack afterwards
 	# push the return value
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -24(%rbp)
 	# generate code for the return expression
 	mov	-16(%rbp), %rax

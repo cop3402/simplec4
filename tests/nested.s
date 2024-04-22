@@ -7,7 +7,7 @@ main:
 	# emit main's prologue
 	push	%rbp
 	mov	%rsp, %rbp
-	sub	$64, %rsp
+	sub	$80, %rsp
 	push	%rbx
 	# move argc and argv from parameter registers to the stack
 	mov	%rdi, -56(%rbp)
@@ -18,30 +18,35 @@ main:
 	mov	$10, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -8(%rbp)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$2, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -16(%rbp)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$1, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -24(%rbp)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$0, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -32(%rbp)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$3, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -40(%rbp)
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -61,10 +66,10 @@ main:
 	pop	%rax
 	# do the subtraction
 	sub	%rbx, %rax
-	push	%rax
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -48(%rbp)
 	# generating code for an ifelsestmt
 	# generate code for the expression
@@ -79,16 +84,6 @@ main:
 	pop	%rbx
 	# pop the left operand
 	pop	%rax
-	# conjuction &&
-	cmp $0, %rax
-	je .L0
-	cmp $0, %rbx
-	je .L0
-	mov	$1, %rax
-	jmp .L1
-.L0:
-	mov	$0, %rax
-.L1:
 	# push the expression result
 	push	%rax
 	# generate code for the right operand
@@ -106,19 +101,19 @@ main:
 	# emit a cmp of register's value to 0, i.e., check whether it's false
 	cmp $0, %rax
 	# emit a je to the else label
-	je .L2
+	je .L0
 	# generate code for the if branch
 	# generating code for a whilestmt
 	# emit the head label
-.L3:
+.L1:
 	# generate code for the expression
 	# emit a pop of the expression value from the stack into a register
 	pop	%rax
 	# emit a cmp of register's value to 0, i.e., check whether it's false
 	cmp $0, %rax
 	# emit a je to the end label
-	je .L4
-	# generate code for the if branch
+	je .L2
+	# generate code for the while body
 	# generating code for an ifelsestmt
 	# generate code for the expression
 	# generate code for the left operand
@@ -132,16 +127,6 @@ main:
 	pop	%rbx
 	# pop the left operand
 	pop	%rax
-	# conjuction &&
-	cmp $0, %rax
-	je .L5
-	cmp $0, %rbx
-	je .L5
-	mov	$1, %rax
-	jmp .L6
-.L5:
-	mov	$0, %rax
-.L6:
 	# push the expression result
 	push	%rax
 	# generate code for the right operand
@@ -159,7 +144,7 @@ main:
 	# emit a cmp of register's value to 0, i.e., check whether it's false
 	cmp $0, %rax
 	# emit a je to the else label
-	je .L7
+	je .L3
 	# generate code for the if branch
 	# generate code for the deref on the left side of an expression
 	mov	-48(%rbp), %rax
@@ -172,12 +157,12 @@ main:
 	pop	%rax
 	# pop the result of the left-hand side
 	pop	%rbx
-	# move the right-hand side's value into the address pointed to by the left-hand size
+	# move the right-hand side's value into the address pointed to by the left-hand side
 	mov	%rax, (%rbx)
 	# emit a jump to the end label
-	jmp .L8
+	jmp .L4
 	# emit the else label
-.L7:
+.L3:
 	# generate code for the else branch
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
@@ -193,10 +178,10 @@ main:
 	pop	%rax
 	# do the addition
 	add	%rbx, %rax
-	push	%rax
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -32(%rbp)
 	# generate code for the deref on the left side of an expression
 	mov	-48(%rbp), %rax
@@ -208,10 +193,10 @@ main:
 	pop	%rax
 	# pop the result of the left-hand side
 	pop	%rbx
-	# move the right-hand side's value into the address pointed to by the left-hand size
+	# move the right-hand side's value into the address pointed to by the left-hand side
 	mov	%rax, (%rbx)
 	# emit the end label
-.L8:
+.L4:
 	# generate code for the right-hand side of the assignment
 	# generate code for the left operand
 	mov	-32(%rbp), %rax
@@ -226,25 +211,26 @@ main:
 	pop	%rax
 	# do the addition
 	add	%rbx, %rax
-	push	%rax
 	# push the expression result
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -32(%rbp)
 	# emit a jump to the head label
-	jmp .L3
+	jmp .L1
 	# emit the end label
-.L4:
-	# emit a jump to the end label
-	jmp .L9
-	# emit the else label
 .L2:
+	# emit a jump to the end label
+	jmp .L5
+	# emit the else label
+.L0:
 	# generate code for the else branch
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$0, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -24(%rbp)
 	# generate code for the deref on the left side of an expression
 	mov	-48(%rbp), %rax
@@ -257,19 +243,21 @@ main:
 	pop	%rax
 	# pop the result of the left-hand side
 	pop	%rbx
-	# move the right-hand side's value into the address pointed to by the left-hand size
+	# move the right-hand side's value into the address pointed to by the left-hand side
 	mov	%rax, (%rbx)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$0, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -32(%rbp)
 	# generate code for the right-hand side of the assignment
 	# push the integer
 	mov	$1, %rax
 	push	%rax
 	pop	%rax
+	# move value to local variable
 	mov	%rax, -40(%rbp)
 	# generate code for the deref on the left side of an expression
 	mov	-48(%rbp), %rax
@@ -282,10 +270,10 @@ main:
 	pop	%rax
 	# pop the result of the left-hand side
 	pop	%rbx
-	# move the right-hand side's value into the address pointed to by the left-hand size
+	# move the right-hand side's value into the address pointed to by the left-hand side
 	mov	%rax, (%rbx)
 	# emit the end label
-.L9:
+.L5:
 	# generate code for the return expression
 	# generate code for the unary operand
 	mov	-48(%rbp), %rax
